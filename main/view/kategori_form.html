@@ -1,0 +1,31 @@
+<div class="bg-light lter b-b wrapper-md">
+  <h1 class="m-n font-thin h3">Form Kategori</h1>
+</div>
+<div class="wrapper-md" ng-controller="CommonFormCtrl">
+	<div class="panel panel-default">
+        <div class="panel-heading font-bold">Kategori</div>
+        <div class="panel-body">
+          <form class="bs-example form-horizontal" ng-submit="submit()">
+            <div class="form-group">
+              <label class="col-lg-2 control-label">Kode</label>
+              <div class="col-lg-10">
+                <input type="text" class="form-control" placeholder="kode kategori" ng-model="form.model.kode">
+                <span class="help-block m-b-none">Isikan kode kategori untuk identitas kategori.</span>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-lg-2 control-label">Nama Kategori</label>
+              <div class="col-lg-10">
+                <input type="text" class="form-control" placeholder="nama kategori" ng-model="form.model.kategori">
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="col-lg-offset-2 col-lg-10">
+                <button type="submit" class="btn btn-sm btn-info">Simpan</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+</div>

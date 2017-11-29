@@ -1,0 +1,128 @@
+<!-- list -->
+<ul class="nav">
+  <li ui-sref-active="active">
+    <a ui-sref="app.dashboard-v1">
+      <i class="glyphicon glyphicon-stats icon text-primary-dker"></i>
+      <span class="font-bold">Dashboard</span>
+    </a>
+  </li>
+  <!-- STUFF -->
+  <li class="line dk hidden-folded"></li>
+  <li class="hidden-folded padder m-t m-b-sm text-muted text-xs">          
+    <span>Informasi Anda</span>
+  </li>  
+  <li>
+    <a ui-sref="app.page.profile">
+      <i class="icon-user icon text-success-lter"></i>
+      <b class="badge bg-success pull-right">30%</b>
+      <span>Profile</span>
+    </a>
+  </li>
+  <!-- /STUFF -->
+  <!-- Data Jamaah -->
+  <li class="hidden-folded padder m-t m-b-sm text-muted text-xs">
+    <span>Informasi Jamaah</span>
+  </li>
+  <li>
+    <a href class="auto">
+      <span class="pull-right text-muted">
+        <i class="fa fa-fw fa-angle-right text"></i>
+        <i class="fa fa-fw fa-angle-down text-active"></i>
+      </span>
+      <i class="glyphicon glyphicon-tasks  icon text-primary-dk"></i>
+      <span class="font-bold">Data M. Taklim</span>
+    </a>
+    <ul class="nav nav-sub dk">
+      <li ui-sref-active="active">
+        <a ui-sref="hmw.ctrl.func({ctrl: 'kategori', func: 'list'})" href="#/kategori/list">
+          <span>Data Majelis Taklim</span>
+        </a>
+      </li>
+      <li ui-sref-active="active">
+        <a ui-sref="hmw.ctrl.func({ctrl: 'kategori', func: 'list'})" href="#/kategori/list">
+          <span>Data Masjid</span>
+        </a>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <a href class="auto">
+      <span class="pull-right text-muted">
+        <i class="fa fa-fw fa-angle-right text"></i>
+        <i class="fa fa-fw fa-angle-down text-active"></i>
+      </span>
+      <i class="glyphicon glyphicon-tasks  icon text-primary-dk"></i>
+      <span class="font-bold">Data Jamaah</span>
+    </a>
+    <ul class="nav nav-sub dk">
+      <li ui-sref-active="active">
+        <a ui-sref="hmw.ctrl.func({ctrl: 'keluarga', func: 'list'})" href="#/keluarga/list">
+          <span>Keluarga</span>
+        </a>
+      </li>
+      <li ui-sref-active="active">
+        <a ui-sref="hmw.ctrl.func({ctrl: 'jamaah', func: 'list'})" href="#/jamaah/list">
+          <span>List Data Jamaah</span>
+        </a>
+      </li>
+    </ul>
+  </li>
+  <!-- /Data Jamaah -->
+
+  <!-- benda-sb -->
+  <li class="hidden-folded padder m-t m-b-sm text-muted text-xs">
+    <span>Benda SB</span>
+  </li>
+  <li>
+    <a href class="auto">
+      <span class="pull-right text-muted">
+        <i class="fa fa-fw fa-angle-right text"></i>
+        <i class="fa fa-fw fa-angle-down text-active"></i>
+      </span>
+      <i class="glyphicon glyphicon-tasks  icon text-primary-dk"></i>
+      <span class="font-bold">List Benda SB</span>
+    </a>
+    <ul class="nav nav-sub dk">
+      <li class="nav-sub-header">
+        <a href>
+          <span>List Benda SB</span>
+        </a>
+      </li>
+      <li ui-sref-active="active">
+        <a ui-sref="hmw.ctrl.func({ctrl: 'kategori', func: 'list'})" href="#/kategori/list">
+          <span>Kategori</span>
+        </a>
+      </li>
+      <li ui-sref-active="active">
+        <a ui-sref="hmw.ctrl.func({ctrl: 'asset-sb', func: 'list'})" href="#/asset-sb/list">
+          <span>Benda SB</span>
+        </a>
+      </li>
+    </ul>
+  </li>
+  <!-- /benda sb-->
+
+  <!-- Data Master -->
+  <li class="hidden-folded padder m-t m-b-sm text-muted text-xs">
+    <span>Data Master</span>
+  </li>
+  <li>
+    <a href class="auto">
+      <span class="pull-right text-muted">
+        <i class="fa fa-fw fa-angle-right text"></i>
+        <i class="fa fa-fw fa-angle-down text-active"></i>
+      </span>
+      <i class="glyphicon glyphicon-tasks  icon text-primary-dk"></i>
+      <span class="font-bold">Data Master</span>
+    </a>
+    <ul class="nav nav-sub dk">
+      <li ui-sref-active="active">
+        <a ui-sref="hmw.ctrl.func({ctrl: 'kategori', func: 'list'})" href="#/kategori/list">
+          <span>Alamat</span>
+        </a>
+      </li>
+    </ul>
+  </li>
+  <!-- /Data Master -->
+</ul>
+<!-- / list

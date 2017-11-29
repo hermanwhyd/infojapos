@@ -1,0 +1,24 @@
+<div class="hbox hbox-auto-xs hbox-auto-sm" ng-controller="BrowseCtrl">
+  <div class="col w-md bg-light dk b-r bg-auto">
+    <div class="wrapper b-b bg">
+      <button class="btn btn-sm btn-default pull-right visible-sm visible-xs" ui-toggle-class="show" target="#category-menu"><i class="fa fa-bars"></i></button>
+	  <form action="#">
+	    <div class="">
+	      <input type="search" class="form-control input-sm" placeholder="Kategori ...">
+	    </div>
+	  </form>
+    </div>
+    <div class="wrapper hidden-sm hidden-xs" id="category-menu">
+      <ul class="nav nav-pills nav-stacked nav-sm">
+        <li ng-repeat="fold in folds" ui-sref-active="active">
+          <a ui-sref="hmw.browse.list({ctrl:ctrl, fold:fold.filter})">
+            {{fold.name}}
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+  <div class="col">
+    <div ui-view ></div>
+  </div>
+</div>

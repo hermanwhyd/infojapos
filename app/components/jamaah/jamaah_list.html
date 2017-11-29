@@ -1,0 +1,73 @@
+<div class="bg-light lter b-b wrapper-md">
+  <h1 class="m-n font-thin h3">List Data Jamaah</h1>
+</div>
+<div class="wrapper-md" ng-controller="CommonListCtrl as ctrl">
+  <div class="panel panel-default">
+    <script type="text/ng-template" id="confirmDeleteModalContent.html">
+      <div ng-include="'app/components/modal/confirmDeleteModalContent.html'"></div>
+    </script>
+    <div class="panel-heading">Jamaah</div>
+    <div cg-busy="ctrl.lPromise">
+      <div class="row wrapper">
+        <div class="col-sm-5 m-b-xs">
+          <button class="btn btn-sm btn-info" ng-click="ctrl.fetchAll()"><i class="fa fa-refresh"></i> Refresh</button>
+          <a class="btn btn-sm btn-success" ui-sref="hmw.ctrl.form({ctrl: 'jamaah', func: 'form', id: '1'})" href="#/kategori/list"><i class="fa fa-plus-circle"></i> Tambah</a>
+        </div>
+        <div class="col-sm-4"></div>
+        <div class="col-sm-3">
+          <input type="text" class="input-sm form-control" placeholder="Search" ng-model="ctrl.searchCriteria">
+        </div>
+      </div>
+      <div class="table-responsive">
+        <table class="table table-striped b-t b-light">
+          <thead>
+            <tr>
+              <th style="width:20px;">#</th>
+              <th>Nama Lengkap</th>
+              <th>Tempat Lahir</th>
+              <th>Tanggal Lahir</th>
+              <th width="85px"></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr ng-repeat="item in ctrl.pagedModels.currentModels | limitTo: ctrl.pageSize : (ctrl.pagedModels.indexLower - 1 )">
+              <td ng-bind="((ctrl.page - 1) * ctrl.pageSize) + ($index + 1)"></td>
+              <td ng-bind="item.nama_lengkap"></td>
+              <td ng-bind="item.tempat_lahir"></td>
+              <td ng-bind="item.tanggal_lahir | date : 'dd MMM yyyy' : 'Asia/Jakarta'"></td>
+              <td class="text-center">
+                <span>
+                  <a href><i class="fa fa-pencil fa-fw m-r-xs text-warning text" tooltip="Edit"></i></a>
+                  <a href ng-click="ctrl.openConfirmDeleteModal(item)"><i class="fa fa-times fa-fw text-danger text" tooltip="Hapus"></i></a>
+                </span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <footer class="panel-footer">
+        <div class="row">
+          <div class="col-sm-4 hidden-xs">
+            <small class="text-muted inline m-t-sm m-b-sm">show </small>
+            <select class="input-xs form-control w-xs inline v-small" ng-model="ctrl.pageSize" ng-change="ctrl.search()" ng-options="o as o for o in ctrl.pageSizeList"></select>
+          </div>
+          <div class="col-sm-4 text-center">
+            <small class="text-muted inline m-t-sm m-b-sm">
+              showing {{ctrl.pagedModels.indexLower + ' - ' + ctrl.pagedModels.indexUpper + ' of ' + ctrl.total}} items
+            </small>
+          </div>
+          <div class="col-sm-4 text-right text-center-xs">
+            <div paging
+              ul-class="pagination pagination-sm m-t-none m-b-none"
+              class="small"
+              page="ctrl.page" 
+              page-size="ctrl.pageSize" 
+              total="ctrl.total"
+              paging-action="ctrl.pagingModels(page, pageSize, total)">
+            </div>
+          </div>
+        </div>
+      </footer>
+    </div>
+  </div>
+</div>
