@@ -4,15 +4,15 @@
 <div class="wrapper-md" ng-controller="JamaahController as ctrl">
   <toaster-container toaster-options="{'position-class': 'toast-top-right', 'close-button':true}"></toaster-container>
   <div class="row">
-    <div class="col-sm-8 col-xs-12">
+    <div class="col-sm-9">
       <div class="panel panel-default">
-        <div class="panel-heading font-bold">Jamaah</div>
-        <div class="panel-body">
-          <form class="bs-example form-horizontal" ng-submit="ctrl.submit()">
+        <div class="panel-heading font-bold">Data Jamaah</div>
+        <div class="panel-body" cg-busy="ctrl.lPromise">
+          <form class="form-horizontal" name="main_form" novalidate class="form-validation">
             <div class="form-group">
               <label class="col-lg-2 control-label">Nama Panggilan</label>
               <div class="col-lg-10">
-                <input type="text" class="form-control" placeholder="nama panggilan" ng-model="ctrl.jamaah.nama_panggilan">
+                <input type="text" class="form-control" placeholder="nama panggilan" ng-model="ctrl.form.model.nama_panggilan">
                 <span class="help-block m-b-none">Isikan nama panggilan jamaah yang berbeda dalam satu Desa.</span>
               </div>
             </div>
@@ -22,15 +22,15 @@
                 <div class="row">
                   <div class="col-sm-3">
                     <label>Gelar Depan</label>
-                    <input type="text" class="form-control" placeholder="gelar depan" ng-model="ctrl.jamaah.nama_lengkap">
+                    <input type="text" class="form-control" placeholder="gelar depan" ng-model="ctrl.form.model.gelar_depan">
                   </div>
                   <div class="col-sm-6">
                     <label>Nama Lengkap</label>
-                    <input type="text" class="form-control" placeholder="nama lengkap" ng-model="ctrl.jamaah.nama_lengkap">
+                    <input type="text" class="form-control" placeholder="nama lengkap" ng-model="ctrl.form.model.nama_lengkap">
                   </div>
                   <div class="col-sm-3">
                       <label>Gelar Belakang</label>
-                      <input type="text" class="form-control" placeholder="gelar belakang" ng-model="ctrl.jamaah.nama_lengkap">
+                      <input type="text" class="form-control" placeholder="gelar belakang" ng-model="ctrl.form.model.gelar_belakang">
                   </div>
                 </div>
               </div>
@@ -38,13 +38,24 @@
             <div class="form-group">
               <label class="col-lg-2 control-label">Tempat Lahir</label>
               <div class="col-lg-10">
-                <input type="text" class="form-control" placeholder="tempat lahir" ng-model="ctrl.jamaah.tempat_lahir">
+                <input type="text" class="form-control" placeholder="tempat lahir" ng-model="ctrl.form.model.tempat_lahir">
               </div>
             </div>
             <div class="form-group">
               <label class="col-lg-2 control-label">Tanggal Lahir</label>
               <div class="col-lg-10">
-                <input type="text" class="form-control" placeholder="tempat lahir" ng-model="ctrl.jamaah.tempat_lahir">
+                <input type="text" class="form-control" placeholder="dd/mm/yyyy" ng-model="ctrl.form.model.tanggal_lahir">
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-lg-2 control-label">Status Pernikahan</label>
+              <div class="col-lg-10">
+                <select name="status_pernikahan" class="form-control m-b" ng-model="ctrl.form.model.status_pernikahan">
+                  <option value="">--Pilih--</option>
+                  <option value="Belum Nikah">Belum Menikah</option>
+                  <option value="Nikah">Sudah Menikah</option>
+                  <option value="Duda">Duda/Janda</option>
+                </select>
               </div>
             </div>
             <div class="form-group">
@@ -52,31 +63,68 @@
               <div class="col-lg-10">
                 <div class="radio">
                   <label class="i-checks">
-                    <input name="goldar" value="A" type="radio" ng-model="" ng-value=""><i></i>A
+                    <input name="goldar" value="A" type="radio" ng-model="ctrl.form.model.golongan_darah"><i></i>A
                   </label>
                 </div>
                 <div class="radio">
                   <label class="i-checks">
-                    <input name="goldar" value="AB" type="radio"><i></i>AB
+                    <input name="goldar" value="AB" type="radio" ng-model="ctrl.form.model.golongan_darah"><i></i>AB
                   </label>
                 </div>
                 <div class="radio">
                   <label class="i-checks">
-                    <input name="goldar" value="B" type="radio"><i></i>B
+                    <input name="goldar" value="B" type="radio" ng-model="ctrl.form.model.golongan_darah"><i></i>B
                   </label>
                 </div>
                 <div class="radio">
                   <label class="i-checks">
-                    <input name="goldar" value="O" type="radio"><i></i>O
+                    <input name="goldar" value="O" type="radio" ng-model="ctrl.form.model.golongan_darah"><i></i>O
                   </label>
                 </div>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-lg-2 control-label">Jenis Kelamin</label>
+              <div class="col-lg-10">
+                <div class="radio">
+                  <label class="i-checks">
+                    <input name="gender" value="L" type="radio" ng-model="ctrl.form.model.jenis_kelamin"><i></i>Laki-laki
+                  </label>
+                </div>
+                <div class="radio">
+                  <label class="i-checks">
+                    <input name="gender" value="P" type="radio" ng-model="ctrl.form.model.jenis_kelamin"><i></i>Perempuan
+                  </label>
+                </div>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-lg-2 control-label">Tempat Tinggal</label>
+              <div class="col-lg-10">
+                <select name="tempat_tinggal" class="form-control m-b"
+                  ng-model="ctrl.form.model.tempat_tinggal" 
+                  ng-options="opt.value as opt.value for opt in ctrl.form.options.status_rumah">
+                  <option value="">--Pilih--</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-lg-2 control-label">Nama Ayah</label>
+              <div class="col-lg-10">
+                <input type="text" class="form-control" placeholder="nama ayah kandung" ng-model="ctrl.form.model.nama_ayah">
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-lg-2 control-label">Nama Ibu</label>
+              <div class="col-lg-10">
+                <input type="text" class="form-control" placeholder="nama ibu kandung" ng-model="ctrl.form.model.nama_ibu">
               </div>
             </div>
           </form>
         </div>
       </div>
     </div>
-    <div class="col-sm-4 col-xs-12">
+    <div class="col-sm-3">
       <div class="panel panel-default">
         <div class="panel-heading font-bold">Kelas Sambung</div>
         <div class="panel-body">
@@ -84,10 +132,94 @@
         </div>
       </div>
     </div>
+    <div class="col-sm-3">
+      <div class="panel panel-default">
+        <div class="panel-heading font-bold">Anggota Keluarga</div>
+        <div class="panel-body">
+          <p class="text-muted">Tidak ada data keluarga. Set data keluarga <a href="#">disini</a></p>
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-4">
+      <form name="form-contact" class="form-validation">
+        <div class="panel panel-default">
+          <div class="panel-heading font-bold">Alamat</div>
+          <div class="panel-body">
+            <div class="form-group">
+              <label>Tipe Hunian</label>
+              <select name="tempat_tinggal" class="form-control m-b" ng-model="ctrl.form.model.tempat_tinggal">
+                <option value="">--Pilih--</option>
+                <option value="Komplek">Komplek/Cluster</option>
+                <option value="Kampung">Kampung</option>
+                <option value="Lainnya">Lainnya</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Nama Komplek/Kampung</label>
+              <input type="text" class="form-control" ng-model="contact.url" required>
+            </div>
+            <div class="form-group pull-in clearfix">
+              <div class="col-sm-3 col-xs-6">
+                <label>Blok/Gang</label>
+                <input type="text" class="form-control" ng-model="contact.email">
+              </div>
+              <div class="col-sm-3 col-xs-6">
+                <label>No. Rumah</label>
+                <input type="text" class="form-control" ng-model="contact.email">
+              </div>
+              <div class="col-sm-3 col-xs-6">
+                <label>RT</label>
+                <input type="text" class="form-control" ng-model="contact.email">
+              </div>
+              <div class="col-sm-3 col-xs-6">
+                <label>RW</label>
+                <input type="text" class="form-control" ng-model="contact.email">
+              </div>
+            </div>
+            <div class="form-group">
+              <label>Kelurahan</label>
+              <input type="text" class="form-control" ng-model="contact.url">
+            </div>
+            <div class="form-group">
+              <label>Kecamatan</label>
+              <input type="text" class="form-control" ng-model="contact.url">
+            </div>
+            <div class="form-group">
+              <label>Kota/Kabupaten</label>
+              <input type="text" class="form-control" ng-model="contact.url">
+            </div>
+            <div class="form-group">
+              <label>Propinsi</label>
+              <input type="text" class="form-control" ng-model="contact.url">
+            </div>
+            <div class="form-group">
+              <label>Kodepos</label>
+              <input type="text" class="form-control" ng-model="contact.url">
+            </div>
+            <div class="form-group">
+              <label>Status Kepemilikan</label>
+              <select name="tempat_tinggal" class="form-control m-b" ng-model="ctrl.form.model.tempat_tinggal">
+                <option value="">--Pilih--</option>
+                <option value="Pribadi">Pribadi</option>
+                <option value="Kontrak">Kontrak/Sewa</option>
+                <option value="Pinjam">Pinjam</option>
+                <option value="Lainnya">Lainnya</option>
+              </select>
+            </div>
+          </div>
+          <footer class="panel-footer text-right bg-light lter">
+            <button type="submit" class="btn btn-danger">Revert</button>
+            <button type="submit" class="btn btn-success">Submit</button>
+          </footer>
+        </div>
+      </form>
+    </div>
     <div class="col-sm-12">
       <div class="panel panel-default">
         <footer class="panel-footer text-right bg-light lter">
-          <button type="submit" class="btn btn-success">Submit</button>
+          <button history-backward class="btn btn-warning">Cancel</button>
+          <button ng-click="ctrl.revert()" ng-disabled="!ctrl.canRevert()" class="btn btn-danger">Revert All</button>
+          <button ng-click="ctrl.submit()" ng-disabled="!ctrl.canSubmit()" class="btn btn-success">Submit All</button>
         </footer>
       </div>
     </div>

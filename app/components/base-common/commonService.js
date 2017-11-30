@@ -4,6 +4,24 @@ app.factory('CommonService', ['$http', '$rootScope', '$log', '$q', function ($ht
 
 	return {
 
+        fetchPilihan: function(grupList) {
+			var urlPath = [$rootScope.config.apiUrl, 'pilihan', grupList.join(';')].join('/');
+            return $http({method: 'get', url: urlPath, headers:{'Content-Type': 'application/json'}})
+                .then(
+                    function(response) {
+                        if (typeof response.data === 'object') {
+							return response.data;
+						} else {
+							return $q.reject(response.data);
+						}
+                    },
+                    function(errResponse) {
+                        $log.error('Error while fetching on controller /pilihan return statuscode ' + errResponse.status);
+                        return $q.reject(errResponse);
+                    }
+                );
+        },
+        
 		fetchAll: function() {
 			var urlPath = [$rootScope.config.apiUrl, $rootScope.$stateParams.ctrl].join('/');
             return $http({method: 'get', url: urlPath, headers:{'Content-Type': 'application/json'}})

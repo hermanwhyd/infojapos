@@ -12,7 +12,7 @@ class JamaahController extends Controller
     public function fetchAll() {
         $sql = <<<EOF
                 SELECT
-                    id, nama_lengkap, tempat_lahir, DATE_FORMAT(tanggal_lahir,'%Y-%m-%dT%TZ') tanggal_lahir 
+                    id, gelar_depan, nama_lengkap, gelar_belakang, tempat_lahir, DATE_FORMAT(tanggal_lahir,'%Y-%m-%dT%TZ') tanggal_lahir 
                 FROM
                     jamaah
 EOF;
@@ -27,7 +27,10 @@ EOF;
     public function fetchOne($id) {
         $sql = <<<EOF
         SELECT
-            id, nama_lengkap, tempat_lahir, DATE_FORMAT(tanggal_lahir,'%Y-%m-%dT%TZ') tanggal_lahir 
+            id, nama_panggilan, gelar_depan, nama_lengkap, gelar_belakang, inisial_khusus, tempat_lahir
+            , jenis_kelamin, golongan_darah, status_pernikahan, status_kehidupan, nama_ayah, nama_ibu
+            , DATE_FORMAT(tanggal_lahir,'%d/%m/%Y') tanggal_lahir, DATE_FORMAT(tanggal_meninggal,'%Y-%m-%dT%TZ') tanggal_meninggal
+            , tempat_tinggal
         FROM
             jamaah
         WHERE 

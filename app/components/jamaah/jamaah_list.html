@@ -37,7 +37,7 @@
               <td ng-bind="item.tanggal_lahir | date : 'dd MMM yyyy' : 'Asia/Jakarta'"></td>
               <td class="text-center">
                 <span>
-                  <a href><i class="fa fa-pencil fa-fw m-r-xs text-warning text" tooltip="Edit"></i></a>
+                  <a href="#/jamaah/form" ui-sref="hmw.ctrl.form({ctrl: 'jamaah', func: 'form', id: item.id})"><i class="fa fa-pencil fa-fw m-r-xs text-warning text" tooltip="Edit"></i></a>
                   <a href ng-click="ctrl.openConfirmDeleteModal(item)"><i class="fa fa-times fa-fw text-danger text" tooltip="Hapus"></i></a>
                 </span>
               </td>

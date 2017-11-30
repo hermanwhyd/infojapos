@@ -16,7 +16,8 @@ $router->get('/', function () use ($router) {
 });
 
 $router->group(['prefix' => 'v1'], function () use ($router) {
-    $router->get('jamaah/', 'JamaahController@FetchAll');
-    $router->get('jamaah/{id}', 'JamaahController@FetchOne');
-    $router->delete('jamaah/{id}', 'JamaahController@Delete');
+    $router->get('jamaah/', 'JamaahController@fetchAll');
+    $router->get('jamaah/{id}', 'JamaahController@fetchOne');
+    $router->delete('jamaah/{id}', 'JamaahController@delete');
+    $router->get('pilihan/{grup}', 'EnumsController@fetchByGrup');
 });
