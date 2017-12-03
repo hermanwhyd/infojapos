@@ -11,7 +11,8 @@ return [
     |
     */
 
-    'allow_origins' => ['http://japos.info'],
+    // 'allow_origins' => ['http://japos.info'],
+    'allow_origins' => ['*'],
 
     /*
     |--------------------------------------------------------------------------

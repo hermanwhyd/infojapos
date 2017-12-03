@@ -1,0 +1,99 @@
+<!-- hbox layout -->
+<div class="hbox hbox-auto-xs bg-light " ng-init="
+app.settings.asideFixed = true;
+app.settings.asideDock = false;
+app.settings.container = false;
+app.hideAside = false;
+app.hideFooter = true;
+" ng-controller="PilihanController as ctrl">
+
+  <!-- ng-template -->
+  <script type="text/ng-template" id="confirmDeleteModalContent.html">
+    <div ng-include="'app/components/modal/confirmDeleteModalContent.html'"></div>
+  </script>
+    
+  <!-- column -->
+  <div class="col w-lg lt b-r" cg-busy="ctrl.lPromise">
+    <div class="vbox">
+      <div class="wrapper">
+        <div class="btn-toolbar pull-right">
+          <a href class="btn btn-sm btn-info m-t-n-xs" ng-click="ctrl.fetchAll()"><i class="fa fa-refresh"></i> Refresh</a>
+          <a href class="btn btn-sm btn-info m-t-n-xs" ng-click="createNote()"><i class="fa fa-plus"></i>  New</a>
+        </div>
+        <div class="h4">Pilihan</div>
+      </div>
+      <div class="wrapper b-t m-t-xxs">
+        <div class="input-group">
+          <span class="input-group-addon input-sm"><i class="fa fa-search"></i></span>
+          <input type="text" class="form-control input-sm" placeholder="search" ng-model="query">
+        </div> 
+      </div>
+      <div class="row-row">
+        <div class="scrollable hover">
+          <div class="padder">
+            <div class="list-group">
+              <a ng-repeat="item in ctrl.list.models | filter:query" 
+                  class="list-group-item b-l-red b-l-3x hover-anchor" 
+                  ng-class="{'hover': item.selected }" ng-click="ctrl.select(item)">
+                <span ng-click='delete(item)' class="pull-right text-muted hover-action"><i class="fa fa-times"></i></span>
+                <span class="block text-ellipsis">{{ item.grup }}</span>
+                <small class="text-muted">{{ item.options.length }} options</small>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- /column -->
+  <!-- column -->
+  <div class="col" cg-busy="ctrl.lPromise">
+    <div class="vbox">
+      <div class="wrapper bg-light lt b-b">
+        <span class="text-muted">{{ ctrl.list.model.grup }}</span>
+      </div>
+      <div class="row-row">
+        <div class="padder">
+          <div class="row wrapper b-t m-t-xxs">
+            <div class="input-group">
+              <span class="input-group-addon input-sm"><i class="fa fa-search"></i></span>
+              <input type="text" class="form-control input-sm" placeholder="search" ng-model="searchCriteria">
+            </div> 
+          </div>
+          <div class="panel panel-default">
+            <div class="table-responsive">
+              <table class="table table-striped b-t b-light">
+                <thead>
+                  <tr>
+                    <th style="width:20px;">#</th>
+                    <th>Posisi</th>
+                    <th>Field_01</th>
+                    <th>Field_02</th>
+                    <th>Field_03</th>
+                    <th width="85px"></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr ng-repeat="item in ctrl.list.model.options | filter:searchCriteria">
+                    <td ng-bind="($index + 1)"></td>
+                    <td ng-bind="item.posisi"></td>
+                    <td ng-bind="item.field_01"></td>
+                    <td ng-bind="item.field_02"></td>
+                    <td ng-bind="item.field_03"></td>
+                    <td class="text-center">
+                      <span>
+                        <a href="#/jamaah/form" ui-sref="hmw.ctrl.form({ctrl: 'jamaah', func: 'form', id: item.id})"><i class="fa fa-pencil fa-fw m-r-xs text-warning text" tooltip="Edit"></i></a>
+                        <a href ng-click="ctrl.openConfirmDeleteModal(item)"><i class="fa fa-times fa-fw text-danger text" tooltip="Hapus"></i></a>
+                      </span>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- /column -->
+</div>

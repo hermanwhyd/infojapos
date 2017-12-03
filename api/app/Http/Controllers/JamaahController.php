@@ -28,9 +28,9 @@ EOF;
         $sql = <<<EOF
         SELECT
             id, nama_panggilan, gelar_depan, nama_lengkap, gelar_belakang, inisial_khusus, tempat_lahir
-            , jenis_kelamin, golongan_darah, status_pernikahan, status_kehidupan, nama_ayah, nama_ibu
+            , jenis_kelamin, golongan_darah, status_pernikahan, status_kehidupan, nama_ayah_kandung, nama_ibu_kandung
             , DATE_FORMAT(tanggal_lahir,'%d/%m/%Y') tanggal_lahir, DATE_FORMAT(tanggal_meninggal,'%Y-%m-%dT%TZ') tanggal_meninggal
-            , tempat_tinggal
+            , tempat_tinggal, pekerjaan_lainnya, pekerjaan_id
         FROM
             jamaah
         WHERE 
@@ -47,7 +47,7 @@ EOF;
     /**
     * Menghapus satu data jamaah dari database
     */
-    public function Delete($id) {
+    public function delete($id) {
         $sql = <<<EOF
         DELETE FROM
             jamaah
@@ -55,7 +55,7 @@ EOF;
             id = :id
 EOF;
 
-        $result = DB::select($sql, ['id' => $id]);
+        $result = DB::delete($sql, ['id' => $id]);
         return $result;
     }
 }

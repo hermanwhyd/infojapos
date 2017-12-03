@@ -590,7 +590,9 @@ angular.module('app')
                           return $ocLazyLoad.load('toaster').then(
                               function(){
                                  return $ocLazyLoad.load([
-		                          	'app/components/base-common/commonCtrl.js',
+                                    // 'app/components/pilihan/pilihanService.js',
+                                    'app/components/pilihan/pilihanCtrl.js',
+                                  	'app/components/base-common/commonCtrl.js',
 		                          	'app/components/base-common/commonService.js'
 		                         ]);
                               }
@@ -617,9 +619,9 @@ angular.module('app')
                         function( $ocLazyLoad){
                           return $ocLazyLoad.load('toaster').then(
                               function(){
-                                 return $ocLazyLoad.load([    
-                                'app/components/jamaah/jamaahService.js',
-                                'app/components/jamaah/jamaahCtrl.js',    
+                                 return $ocLazyLoad.load([
+                                'app/components/' + $stateParams.ctrl +'/' + $stateParams.ctrl + 'Service.js',
+                                'app/components/' + $stateParams.ctrl +'/' + $stateParams.ctrl + 'Ctrl.js',    
                                 'app/components/base-common/commonCtrl.js',
                                 'app/components/base-common/commonService.js'
                              ]);

@@ -16,8 +16,17 @@ $router->get('/', function () use ($router) {
 });
 
 $router->group(['prefix' => 'v1'], function () use ($router) {
+    // Jamaah
     $router->get('jamaah/', 'JamaahController@fetchAll');
     $router->get('jamaah/{id}', 'JamaahController@fetchOne');
     $router->delete('jamaah/{id}', 'JamaahController@delete');
-    $router->get('pilihan/{grup}', 'EnumsController@fetchByGrup');
+
+    // Master Pilihan
+    $router->get('pilihan/', 'EnumsController@fetchAll');
+    $router->get('pilihan/{grupStrList}', 'EnumsController@fetchByListGrup');
+    $router->get('pilihan/grup/{grup}', 'EnumsController@fetchByGrup');
+    $router->get('pilihan/id/{id}', 'EnumsController@fetchById');
+    $router->post('pilihan/{id}', 'EnumsController@update');
+    $router->post('pilihan/', 'EnumsController@save');
+    $router->delete('pilihan/{id}', 'EnumsController@delete');
 });
