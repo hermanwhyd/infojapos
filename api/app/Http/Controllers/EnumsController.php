@@ -100,7 +100,7 @@ EOF;
     /**
     * Menghapus satu data dari database
     */
-    public function delete($id) {
+    public function deleteById($id) {
         $sql = <<<EOF
         DELETE FROM
             m_pilihan
@@ -109,7 +109,22 @@ EOF;
 EOF;
 
         $result = DB::delete($sql, ['id' => $id]);
-        return response()->json($result);
+        return response()->json(["ResponseStatus" => "success", "RowDeleted" => $result]);
+    }
+
+    /**
+    * Menghapus satu data dari database
+    */
+    public function deleteByGrup($grup) {
+        $sql = <<<EOF
+        DELETE FROM
+            m_pilihan
+        WHERE 
+            grup = :grup
+EOF;
+
+        $result = DB::delete($sql, ['grup' => $grup]);
+        return response()->json(["ResponseStatus" => "success", "RowDeleted" => $result]);
     }
 
     /**
@@ -138,7 +153,7 @@ EOF;
             id=?
 EOF;
 
-        $result = DB::insert($sql, [ $request->input('grup'),$request->input('field_01'),$request->input('field_02'),$request->input('field_03'), $id ]);
+        $result = DB::update($sql, [ $request->input('grup'),$request->input('field_01'),$request->input('field_02'),$request->input('field_03'), $id ]);
         return response()->json($result);
     }
 }

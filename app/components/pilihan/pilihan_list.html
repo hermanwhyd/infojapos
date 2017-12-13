@@ -1,3 +1,5 @@
+<!-- toaster -->
+<toaster-container toaster-options="{'position-class': 'toast-top-right', 'close-button':true}"></toaster-container>
 <!-- hbox layout -->
 <div class="hbox hbox-auto-xs bg-light " ng-init="
 app.settings.asideFixed = true;
@@ -6,12 +8,14 @@ app.settings.container = false;
 app.hideAside = false;
 app.hideFooter = true;
 " ng-controller="PilihanController as ctrl">
-
   <!-- ng-template -->
   <script type="text/ng-template" id="confirmDeleteModalContent.html">
     <div ng-include="'app/components/modal/confirmDeleteModalContent.html'"></div>
   </script>
-    
+  <script type="text/ng-template" id="formPilihanModalContent.html">
+    <div ng-include="'app/components/pilihan/formPilihanModalContent.html'"></div>
+  </script>
+
   <!-- column -->
   <div class="col w-lg lt b-r" cg-busy="ctrl.lPromise">
     <div class="vbox">
@@ -34,9 +38,10 @@ app.hideFooter = true;
             <div class="list-group">
               <a ng-repeat="item in ctrl.list.models | filter:query" 
                   class="list-group-item b-l-red b-l-3x hover-anchor" 
-                  ng-class="{'hover': item.selected }" ng-click="ctrl.select(item)">
-                <span ng-click='delete(item)' class="pull-right text-muted hover-action"><i class="fa fa-times"></i></span>
+                  ng-class="{'hover': item.selected }" ng-click="ctrl.select(item)" ng-dblclick="ctrl.editItem(item)">
+                <span ng-click='ctrl.openConfirmDeleteByGrupModal(item)' class="pull-right text-muted hover-action"><i class="fa fa-times"></i></span>
                 <span class="block text-ellipsis">{{ item.grup }}</span>
+                <input type="text" class="form-control pos-abt" ng-show="item.editing" ng-blur="ctrl.doneEditing(item)" ng-model="item.grup" style="top:3px;left:2px;width:98%" ui-focus="item.editing">
                 <small class="text-muted">{{ item.options.length }} options</small>
               </a>
             </div>
@@ -82,8 +87,8 @@ app.hideFooter = true;
                     <td ng-bind="item.field_03"></td>
                     <td class="text-center">
                       <span>
-                        <a href="#/jamaah/form" ui-sref="hmw.ctrl.form({ctrl: 'jamaah', func: 'form', id: item.id})"><i class="fa fa-pencil fa-fw m-r-xs text-warning text" tooltip="Edit"></i></a>
-                        <a href ng-click="ctrl.openConfirmDeleteModal(item)"><i class="fa fa-times fa-fw text-danger text" tooltip="Hapus"></i></a>
+                        <a href ng-click="ctrl.openFormModal(item)"><i class="fa fa-pencil fa-fw m-r-xs text-warning text" tooltip="Edit"></i></a>
+                        <a href ng-click="ctrl.openConfirmDeleteByIdModal(item)"><i class="fa fa-times fa-fw text-danger text" tooltip="Hapus"></i></a>
                       </span>
                     </td>
                   </tr>

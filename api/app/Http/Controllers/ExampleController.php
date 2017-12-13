@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use DB;
+
+
 class ExampleController extends Controller
 {
     /**
@@ -14,5 +17,18 @@ class ExampleController extends Controller
         //
     }
 
-    //
+    // test
+    public function testConnection() {
+        $message = "Success";
+        try {
+            DB::connection()->getPdo();
+            if(DB::connection()->getDatabaseName()) {
+                $message = "Yes! Successfully connected to the DB: " . DB::connection()->getDatabaseName();
+            }
+        } catch (\Exception $e) {
+            $message = "Could not connect to the database.  Please check your configuration.";
+        }
+        
+        return ["Status" => "Success", "Message" => $message];
+    }
 }

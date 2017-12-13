@@ -4,6 +4,12 @@
     </IfModule>
 
     RewriteEngine On
+    
+    # If not from 
+    RewriteCond %{HTTP_HOST} !^api\.japos\.online$ [NC] 
+    # Go to 
+    RewriteRule .* http://www.japos.online/ [L]
+    #RewriteRule ^ - [F]
 
     # Redirect Trailing Slashes If Not A Folder...
     RewriteCond %{REQUEST_FILENAME} !-d

@@ -1,0 +1,13 @@
+<ifModule mod_rewrite.c>
+    RewriteEngine On
+    
+    # If not from 
+    RewriteCond %{HTTP_HOST} !^api\.japos\.online$ [NC] 
+    # Go to 
+    RewriteRule .* http://www.japos.online/ [L]
+    #RewriteRule ^ - [F]
+    
+    #rewrite public
+    RewriteCond %{REQUEST_URI} !^public
+    RewriteRule ^(.*)$ public/$1 [L]
+</ifModule>
