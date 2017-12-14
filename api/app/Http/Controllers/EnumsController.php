@@ -39,9 +39,12 @@ EOF;
 
     /**
      * Mengambil seluruh data dari database
+     * 
+     * @param ?grup[]={GRUP_NAME}
      */
-    public function fetchByListGrup($grupStrList) {
+    public function fetchByListGrup(Request $request) {
         $result = [];
+
         $sql = <<<EOF
                 SELECT 
                     id, FIELD_01 value
@@ -52,7 +55,7 @@ EOF;
                 ORDER BY GRUP, POSISI ASC
 EOF;
 
-        $grupList = explode(';', $grupStrList);
+        $grupList = $request->input('grup.*');
         foreach($grupList as $grup) {
             $result[$grup] = DB::select($sql, ['grup' => $grup]);
         }

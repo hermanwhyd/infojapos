@@ -31,4 +31,18 @@ class ExampleController extends Controller
         
         return ["Status" => "Success", "Message" => $message];
     }
+
+    public function getSQLTime() {
+        $message = "Success";
+        try {
+            DB::connection()->getPdo();
+            if(DB::connection()->getDatabaseName()) {
+                $message = DB::select("select now()");
+            }
+        } catch (\Exception $e) {
+            $message = "Could not connect to the database.  Please check your configuration.";
+        }
+        
+        return ["Status" => "Success", "Message" => $message];
+    }
 }

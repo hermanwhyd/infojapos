@@ -16,7 +16,8 @@ $router->get('/', function () use ($router) {
 });
 
 $router->group(['prefix' => 'v0'], function () use ($router) {
-    $router->get('test/', 'ExampleController@testConnection');
+    $router->get('test', 'ExampleController@testConnection');
+    $router->get('sql-time', 'ExampleController@getSQLTime');
 });
 
 $router->group(['prefix' => 'v1'], function () use ($router) {
@@ -25,21 +26,21 @@ $router->group(['prefix' => 'v1'], function () use ($router) {
     $router->get('jamaah/{id}', 'JamaahController@fetchOne');
     $router->delete('jamaah/{id}', 'JamaahController@delete');
 
-    // Master Pilihan
-    $router->get('pilihan', 'EnumsController@fetchAll');
-    $router->get('pilihan/{grupStrList}', 'EnumsController@fetchByListGrup');
-    $router->get('pilihan/grup/{grup}', 'EnumsController@fetchByGrup');
-    $router->get('pilihan/id/{id}', 'EnumsController@fetchById');
-    $router->patch('pilihan/{id}', 'EnumsController@update');
-    $router->put('pilihan', 'EnumsController@save');
-    $router->delete('pilihan/{grup:[A-Za-z]+}', 'EnumsController@deleteByGrup');
-    $router->delete('pilihan/{grup:[0-9]+}', 'EnumsController@deleteById');
+    // Master enumerations
+    $router->get('enums/list', 'EnumsController@fetchByListGrup');
+    $router->get('enums/list/all', 'EnumsController@fetchAll');
+    $router->get('enums/{grup}', 'EnumsController@fetchByGrup');
+    $router->get('enums/{id:[0-9]+}', 'EnumsController@fetchById');
+    $router->post('enums', 'EnumsController@save');
+    $router->put('enums/{id}', 'EnumsController@update');
+    $router->delete('enums/{grup:[A-Za-z]+}', 'EnumsController@deleteByGrup');
+    $router->delete('enums/{id:[0-9]+}', 'EnumsController@deleteById');
 
-    // Jadwal KBM
-    $router->get('kbm/{timestamp}/all', 'KBMController@fetchJadwalKBMAll');
-    $router->get('kbm/jadwal/{id}/siswa', 'KBMController@fetchSiswaByJadwal');
-    $router->get('kbm/jadwal/{id}/presensi/{timestamp}', 'KBMController@fetchPresensiByJadwal');
-    $router->put('kbm/presensi/{jadwalID}', 'KBMController@createNewPresensi');
-    $router->patch('kbm/presensi/{presensiID}', 'KBMController@updatePresensi');
+    // Jadwal KBM Kelas
+    $router->get('class-schedules/{timestamp}', 'KBMController@fetchJadwalKBMAll');
+    $router->get('class-schedules/{scdID:[0-9]+}/students', 'KBMController@fetchSiswaByJadwal');
+    $router->get('class-schedules/{scdID:[0-9]+}/presences/{timestamp}', 'KBMController@fetchPresensiByJadwal');
+    $router->post('class-presences/{scdID:[0-9]+}', 'KBMController@createNewPresensi');
+    $router->put('class-presences/{pscID:[0-9]+}', 'KBMController@updatePresensi');
 
 });
