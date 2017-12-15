@@ -44,7 +44,7 @@ EOF;
 EOF;
 
         $sql2 = <<<EOF
-                SELECT kj.id, jm.nama_panggilan, jm.nama_lengkap, mt.inisial kelompok
+                SELECT jm.id, jm.nama_panggilan, jm.nama_lengkap, mt.inisial kelompok
                 FROM kelas_jadwal kj
                     inner join kelas_jamaah km on kj.kelas_id = km.kelas_id
                     inner join jamaah jm on km.jamaah_id = jm.id
@@ -82,7 +82,7 @@ EOF;
 EOF;
 
         $sql2 = <<<EOF
-                SELECT kj.id, kpd.jamaah_id, jm.nama_panggilan, jm.nama_lengkap, mt.inisial kelompok, kpd.keterangan
+                SELECT kpd.jamaah_id id, jm.nama_panggilan, jm.nama_lengkap, mt.inisial kelompok, kpd.keterangan
                 FROM kelas_jadwal kj
                     inner join kelas_presensi kp on kj.id = kp.kelas_jadwal_id and DATE(kp.tanggal_presensi) = DATE(STR_TO_DATE(:timestamp, '%d-%m-%Y'))
                     inner join kelas_presensi_detail kpd on kp.id = kpd.kelas_presensi_id
@@ -135,8 +135,7 @@ EOF;
             $idPresensi = DB::connection()->getPdo()->lastInsertId();
             $result2 = DB::insert($sql2, [$idPresensi, 'androidApps', $jadwalID]);
 
-
-            return response()->json(["ResponseStatus" => "success", "SiswaTotal" => $result2]);
+            return response()->json(["ResponseStatus" => "success", "HasStudents" => $result2]);
         } else {
             return response()->json(["ResponseStatus" => "BusinessError", "Message" => "Presensi sudah di ada. Silakan reload aplikasi atau pilih tanggal lain!"], 409);
         }
