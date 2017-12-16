@@ -62,7 +62,7 @@ EOF;
 
         $jadwal = $result[0];
         // put ke array parent
-        $jadwal->listSiswa = $result2;
+        $jadwal->list_siswa = $result2;
         return response()->json($jadwal);
     }
 
@@ -101,7 +101,7 @@ EOF;
 
         $jadwal = $result[0];
         // put ke array parent
-        $jadwal->listSiswa = $result2;
+        $jadwal->list_siswa = $result2;
         return response()->json($jadwal);
     }
 

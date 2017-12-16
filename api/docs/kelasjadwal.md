@@ -40,7 +40,7 @@ Untuk mendapatkan List data siswa dalam satu kelas. Parameter - 'scdID' merupaka
       "id": 31201,
       "nama_kelas": "AXEL 3",
       "lv_pembinaan": "Desa",
-      "listSiswa": [
+      "list_siswa": [
         {
           "id": 83001,
           "nama_panggilan": "Anggi",
@@ -64,7 +64,7 @@ Untuk mendapatkan data presensi siswa dalam kelas dengan jadwal di parameter - '
       "id": 31201,
       "nama_kelas": "AXEL 3",
       "tipe_mt": "Desa",
-      "listSiswa": [
+      "list_siswa": [
         {
           "id": 83001,
           "nama_panggilan": "Anggi",
