@@ -11,6 +11,7 @@
   24300 | majelis_taklim
 
   81000 | kartu_keluarga
+  82100 | jamaah_pembinaan
   83000 | jamaah
 
 

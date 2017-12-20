@@ -27,14 +27,14 @@ $router->group(['prefix' => 'v1'], function () use ($router) {
     $router->delete('jamaah/{id}', 'JamaahController@delete');
 
     // Master enumerations
-    $router->get('enums/list', 'EnumsController@fetchByListGrup');
-    $router->get('enums/list/all', 'EnumsController@fetchAll');
-    $router->get('enums/{grup}', 'EnumsController@fetchByGrup');
-    $router->get('enums/{id:[0-9]+}', 'EnumsController@fetchById');
-    $router->post('enums', 'EnumsController@save');
-    $router->put('enums/{id}', 'EnumsController@update');
-    $router->delete('enums/{grup:[A-Za-z]+}', 'EnumsController@deleteByGrup');
-    $router->delete('enums/{id:[0-9]+}', 'EnumsController@deleteById');
+    $router->get('pilihan/list', 'EnumsController@fetchByListGrup');
+    $router->get('pilihan/list/all', 'EnumsController@fetchAll');
+    $router->get('pilihan/{grup}', 'EnumsController@fetchByGrup');
+    $router->get('pilihan/{id:[0-9]+}', 'EnumsController@fetchById');
+    $router->post('pilihan', 'EnumsController@save');
+    $router->put('pilihan/{id}', 'EnumsController@update');
+    $router->delete('pilihan/{grup:[A-Za-z]+}', 'EnumsController@deleteByGrup');
+    $router->delete('pilihan/{id:[0-9]+}', 'EnumsController@deleteById');
 
     // Jadwal KBM Kelas
     $router->get('class-schedules/{timestamp}', 'KBMController@fetchJadwalKBMAll');

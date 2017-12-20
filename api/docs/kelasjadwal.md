@@ -20,7 +20,7 @@ Untuk mendapatkan jadwal kelas, termasuk informasi absensi, sesuai dengan tangga
         "id": 31201,
         "nama_kelas": "AXEL 3",
         "lokasi": "MU lt 2",
-        "pembinaan": "Desa",
+        "lv_pembina": "Desa",
         "jam_mulai": "20:00",
         "jam_selesai": "21:30",
         "status_presensi": "Partial 1"
@@ -39,7 +39,7 @@ Untuk mendapatkan List data siswa dalam satu kelas. Parameter - 'scdID' merupaka
     {
       "id": 31201,
       "nama_kelas": "AXEL 3",
-      "lv_pembinaan": "Desa",
+      "lv_pembina": "Desa",
       "list_siswa": [
         {
           "id": 83001,
@@ -63,7 +63,7 @@ Untuk mendapatkan data presensi siswa dalam kelas dengan jadwal di parameter - '
     {
       "id": 31201,
       "nama_kelas": "AXEL 3",
-      "tipe_mt": "Desa",
+      "lv_pembina": "Desa",
       "list_siswa": [
         {
           "id": 83001,

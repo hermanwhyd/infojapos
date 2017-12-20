@@ -13,14 +13,15 @@ class KBMController extends Controller {
      */
     public function fetchJadwalKBMAll($timestamp) {
         $sql = <<<EOF
-                SELECT kj.id, kl.nama_kelas, kj.lokasi, mt.tipe_mt as pembinaan, kj.jam_mulai, kj.jam_selesai, kp.status_presensi
+                SELECT kj.id, kl.nama_kelas, kj.lokasi, en.field_02 lv_pembina, kj.jam_mulai, kj.jam_selesai, kp.status_presensi
                 FROM kelas_jadwal kj
                     inner join kelas kl on kj.kelas_id = kl.id
                     inner join majelis_taklim mt on kj.mt_id = mt.id
+                        inner join m_pilihan en on mt.lv_pembina = en.id
                     left outer join kelas_presensi kp on kj.id = kp.kelas_jadwal_id and DATE(kp.tanggal_presensi) = STR_TO_DATE(:timestamp, '%d-%m-%Y')
                 WHERE
                     kj.hari = :day
-                ORDER BY kl.nama_kelas, kj.jam_mulai
+                ORDER BY kj.jam_mulai, kj.jam_selesai, kl.nama_kelas
 EOF;
         
         $date = DateTime::createFromFormat('d-m-Y', $timestamp);
@@ -36,10 +37,11 @@ EOF;
      */
     public function fetchSiswaByJadwal($scdID) {
         $sql1 = <<<EOF
-                SELECT kj.id, kl.nama_kelas, mt.tipe_mt lv_pembinaan
+                SELECT kj.id, kl.nama_kelas, en.field_02 lv_pembina
                 FROM kelas_jadwal kj
                     inner join kelas kl on kj.kelas_id = kl.id
                     inner join majelis_taklim mt on kj.mt_id = mt.id
+                        inner join m_pilihan en on mt.lv_pembina = en.id
                 WHERE kj.id = :j_id
 EOF;
 
@@ -74,10 +76,11 @@ EOF;
      */
     public function fetchPresensiByJadwal($scdID, $timestamp) {
         $sql1 = <<<EOF
-                SELECT kj.id, kl.nama_kelas, mt.tipe_mt
+                SELECT kj.id, kl.nama_kelas, en.field_02 lv_pembina
                 FROM kelas_jadwal kj
                     inner join kelas kl on kj.kelas_id = kl.id
                     inner join majelis_taklim mt on kj.mt_id = mt.id
+                    inner join m_pilihan en on mt.lv_pembina = en.id
                 WHERE kj.id = :j_id
 EOF;
 
