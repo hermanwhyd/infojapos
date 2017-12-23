@@ -112,7 +112,10 @@ EOF;
     * Update Presensi Ket by presensiID
     */
     public function createNewPresensi(Request $request, $jadwalID) {
-        $sql0 = "SELECT count(*) count FROM kelas_presensi WHERE kelas_jadwal_id = ? and DATE(tanggal_presensi) = STR_TO_DATE(?, '%d-%m-%Y')";
+        $sql0 = <<<EOF
+        SELECT count(*) count FROM kelas_presensi 
+            WHERE kelas_jadwal_id = ? and DATE(tanggal_presensi) = STR_TO_DATE(?, '%d-%m-%Y')
+EOF;
 
         $sql1 = <<<EOF
         INSERT INTO kelas_presensi (kelas_jadwal_id, tanggal_presensi, status_presensi, created_by)
@@ -120,8 +123,8 @@ EOF;
 EOF;
 
         $sql2 = <<<EOF
-        INSERT INTO kelas_presensi_detail (kelas_presensi_id, jamaah_id, created_by)
-            SELECT ? kelas_presensi_id, km.jamaah_id, ? created_by
+        INSERT INTO kelas_presensi_detail (kelas_presensi_id, jamaah_id, updated_by)
+            SELECT ? kelas_presensi_id, km.jamaah_id, ? updated_by
             FROM kelas_jadwal kj
                 inner join kelas_jamaah km on kj.kelas_id = km.kelas_id
                 inner join jamaah jm on km.jamaah_id = jm.id
@@ -138,7 +141,7 @@ EOF;
             $idPresensi = DB::connection()->getPdo()->lastInsertId();
             $result2 = DB::insert($sql2, [$idPresensi, 'androidApps', $jadwalID]);
 
-            return response()->json(["ResponseStatus" => "success", "HasStudents" => $result2]);
+            return response()->json(["ResponseStatus" => "success", "Message" => "Result: " . $result2]);
         } else {
             return response()->json(["ResponseStatus" => "BusinessError", "Message" => "Presensi sudah di ada. Silakan reload aplikasi atau pilih tanggal lain!"], 409);
         }
@@ -156,6 +159,6 @@ EOF;
 EOF;
 
         $result = DB::update($sql, [ $request->input('keterangan'),$presensiID,$request->input('jamaah_id')]);
-        return response()->json(["ResponseStatus" => "success", "RowUpdated" => $result]);
+        return response()->json(["ResponseStatus" => "success", "Message" => "Data terupdate: " . $result]);
     }
 }
