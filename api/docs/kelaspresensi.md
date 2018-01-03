@@ -27,14 +27,23 @@ Untuk membuat data presensi dengan jadwal dan kelas sesuai di parameters. Seluru
 + Response 409 (application/json)
     {
       "ResponseStatus": "BusinessError",
-      "Message": "Presensi sudah di ada. Silakan reload aplikasi atau pilih tanggal lain!"
+      "Message": "Presensi sudah di ada. Silakan swipe aplikasi atau pilih tanggal lain!"
     }
 
 ## Update Presensi [PUT]
-Untuk update data presensi yang sudah dibuat dari api diatas. Keterangan berisi 'H','A','S','I' yang mengandung arti Hadir, Alpha, Sakit, Izin.
+Untuk update data presensi yang sudah dibuat. Keterangan berisi 'H','A','I' yang mengandung arti Hadir, Alpha, Sakit, Izin. Input berupa json array yang berisi object dengan field jamaah_id dna keterangan.
 
 + Request (application/json)
-    {"jamaah_id": "83001", "keterangan": "S"}
+    {
+        "id": 31201,
+        "nama_kelas": "AXEL 3",
+        "lokasi": "MU lt 2",
+        "lv_pembina": "Desa",
+        "jam_mulai": "20:00",
+        "jam_selesai": "21:30",
+        "status_presensi": null,
+        "list_siswa" : [{"jamaah_id": "83001", "keterangan": "I", "alasan": "sakit"}]
+    }
 
 + Response 200 (applicatioin/json)
     {

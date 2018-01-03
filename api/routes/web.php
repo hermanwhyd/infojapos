@@ -18,6 +18,7 @@ $router->get('/', function () use ($router) {
 $router->group(['prefix' => 'v0'], function () use ($router) {
     $router->get('test', 'ExampleController@testConnection');
     $router->get('sql-time', 'ExampleController@getSQLTime');
+    $router->get('php-time', 'ExampleController@getPHPTime');
 });
 
 $router->group(['prefix' => 'v1'], function () use ($router) {

@@ -76,16 +76,17 @@ EOF;
      */
     public function fetchPresensiByJadwal($scdID, $timestamp) {
         $sql1 = <<<EOF
-                SELECT kj.id, kl.nama_kelas, en.field_02 lv_pembina
+                SELECT kp.id, kl.nama_kelas, en.field_02 lv_pembina
                 FROM kelas_jadwal kj
                     inner join kelas kl on kj.kelas_id = kl.id
+                    inner join kelas_presensi kp on kj.id = kp.kelas_jadwal_id and DATE(kp.tanggal_presensi) = DATE(STR_TO_DATE(:timestamp, '%d-%m-%Y'))
                     inner join majelis_taklim mt on kj.mt_id = mt.id
                     inner join m_pilihan en on mt.lv_pembina = en.id
                 WHERE kj.id = :j_id
 EOF;
 
         $sql2 = <<<EOF
-                SELECT kpd.jamaah_id id, jm.nama_panggilan, jm.nama_lengkap, mt.inisial kelompok, kpd.keterangan
+                SELECT kpd.jamaah_id, jm.nama_panggilan, jm.nama_lengkap, mt.inisial kelompok, kpd.keterangan, kpd.alasan
                 FROM kelas_jadwal kj
                     inner join kelas_presensi kp on kj.id = kp.kelas_jadwal_id and DATE(kp.tanggal_presensi) = DATE(STR_TO_DATE(:timestamp, '%d-%m-%Y'))
                     inner join kelas_presensi_detail kpd on kp.id = kpd.kelas_presensi_id
@@ -99,13 +100,17 @@ EOF;
         $date = DateTime::createFromFormat('d-m-Y', $timestamp);
         Log::info('Datetime: ' . json_encode(['j_id' => $scdID, 'timestamp' => $date->format('d-m-Y')]));
         
-        $result = DB::select($sql1, ['j_id' => $scdID]);
+        $result = DB::select($sql1, ['j_id' => $scdID, 'timestamp' => $date->format('d-m-Y')]);
         $result2 = DB::select($sql2, ['j_id' => $scdID, 'timestamp' => $date->format('d-m-Y')]);
 
-        $jadwal = $result[0];
-        // put ke array parent
-        $jadwal->list_siswa = $result2;
-        return response()->json($jadwal);
+        if (count($result) > 0) {
+            $jadwal = $result[0];
+            // put ke array parent
+            $jadwal->list_siswa = $result2;
+            return response()->json($jadwal);
+        } else {
+            return response()->json(["ResponseStatus" => "BusinessError", "Message" => "Jadwal KBM tidak ada. Silakan pilih tanggal lain!"], 404);
+        }
     }
 
     /**
@@ -149,16 +154,21 @@ EOF;
 
     /**
     * Update Presensi Ket by presensiID
+    * $request->input() in array
     */
     public function updatePresensi(Request $request, $presensiID) {
         $sql = <<<EOF
         UPDATE
-            kelas_presensi_detail SET keterangan=?
+            kelas_presensi_detail SET keterangan=?, alasan=?
         WHERE
             kelas_presensi_id=? and jamaah_id=?
 EOF;
 
-        $result = DB::update($sql, [ $request->input('keterangan'),$presensiID,$request->input('jamaah_id')]);
-        return response()->json(["ResponseStatus" => "success", "Message" => "Data terupdate: " . $result]);
+        $presences = $request->input('list_siswa');
+        foreach($presences as $presence) {
+            DB::update($sql, [ $presence['keterangan'],$presence['alasan'],$presensiID,$presence['jamaah_id'] ]);
+        }
+        
+        return response()->json(["ResponseStatus" => "success", "Message" => "Data berhasil diupdate."]);
     }
 }

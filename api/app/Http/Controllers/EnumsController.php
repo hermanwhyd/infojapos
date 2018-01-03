@@ -68,7 +68,7 @@ EOF;
     public function fetchByGrup($grup) {
         $sql = <<<EOF
                 SELECT 
-                    id, FIELD_01 value
+                    id, grup, FIELD_01 value
                 FROM 
                     M_PILIHAN
                 WHERE 

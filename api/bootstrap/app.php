@@ -69,7 +69,8 @@ $app->singleton(
 */
 
 $app->middleware([
-    'Nord\Lumen\Cors\CorsMiddleware'
+    'Nord\Lumen\Cors\CorsMiddleware',
+    'Illuminate\Session\Middleware\StartSession'
 ]);
 
 // $app->routeMiddleware([

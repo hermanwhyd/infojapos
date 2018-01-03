@@ -3,7 +3,8 @@
 namespace App\Http\Controllers;
 
 use DB;
-
+use \Datetime;
+use Illuminate\Http\Request;
 
 class ExampleController extends Controller
 {
@@ -44,5 +45,13 @@ class ExampleController extends Controller
         }
         
         return ["Status" => "Success", "Message" => $message];
+    }
+
+    public function getPHPTime(Request $request) {
+        $message = "Success";
+        $date = DateTime::createFromFormat('d-m-Y', $request->input('timestamp'));
+        $message = $date;
+        
+        return ["Status" => "Success", "InputTimestamp" => $request->input('timestamp'), "Message" => $message];
     }
 }
