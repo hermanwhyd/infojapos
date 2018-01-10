@@ -21,7 +21,7 @@ Untuk membuat data presensi dengan jadwal dan kelas sesuai di parameters. Seluru
 + Response 200 (applicatioin/json)
     {
       "ResponseStatus": "success",
-      "HasStudents": true
+      "Message": true
     }
 
 + Response 409 (application/json)
@@ -48,5 +48,5 @@ Untuk update data presensi yang sudah dibuat. Keterangan berisi 'H','A','I' yang
 + Response 200 (applicatioin/json)
     {
         "ResponseStatus": "success",
-        "RowUpdated": 1
+        "Message": 1
     }

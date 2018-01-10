@@ -6,6 +6,7 @@ use Log;
 use DB;
 use Illuminate\Http\Request;
 use \Datetime;
+use Illuminate\Support\Facades\Auth;
 
 class KBMController extends Controller {
     /**
@@ -109,7 +110,7 @@ EOF;
             $jadwal->list_siswa = $result2;
             return response()->json($jadwal);
         } else {
-            return response()->json(["ResponseStatus" => "BusinessError", "Message" => "Jadwal KBM tidak ada. Silakan pilih tanggal lain!"], 404);
+            return response()->json(["response_status" => "BusinessError", "message" => "Jadwal KBM tidak ada. Silakan pilih tanggal lain!"], 404);
         }
     }
 
@@ -146,9 +147,9 @@ EOF;
             $idPresensi = DB::connection()->getPdo()->lastInsertId();
             $result2 = DB::insert($sql2, [$idPresensi, 'androidApps', $jadwalID]);
 
-            return response()->json(["ResponseStatus" => "success", "Message" => "Result: " . $result2]);
+            return response()->json(["response_status" => "success", "message" => "Result: " . $result2]);
         } else {
-            return response()->json(["ResponseStatus" => "BusinessError", "Message" => "Presensi sudah di ada. Silakan reload aplikasi atau pilih tanggal lain!"], 409);
+            return response()->json(["response_status" => "BusinessError", "message" => "Presensi sudah di ada. Silakan reload aplikasi atau pilih tanggal lain!"], 409);
         }
     }
 
@@ -157,18 +158,22 @@ EOF;
     * $request->input() in array
     */
     public function updatePresensi(Request $request, $presensiID) {
+        $user = Auth::user();
+
+        $user = $request->user();
+
         $sql = <<<EOF
         UPDATE
-            kelas_presensi_detail SET keterangan=?, alasan=?
+            kelas_presensi_detail SET keterangan=?, alasan=?, updated_by=?
         WHERE
             kelas_presensi_id=? and jamaah_id=?
 EOF;
 
         $presences = $request->input('list_siswa');
         foreach($presences as $presence) {
-            DB::update($sql, [ $presence['keterangan'],$presence['alasan'],$presensiID,$presence['jamaah_id'] ]);
+            DB::update($sql, [ $presence['keterangan'],$presence['alasan'],$user->username,$presensiID,$presence['jamaah_id'] ]);
         }
         
-        return response()->json(["ResponseStatus" => "success", "Message" => "Data berhasil diupdate."]);
+        return response()->json(["response_status" => "success", "message" => "Data berhasil diupdate."]);
     }
 }

@@ -112,7 +112,7 @@ EOF;
 EOF;
 
         $result = DB::delete($sql, ['id' => $id]);
-        return response()->json(["ResponseStatus" => "success", "RowDeleted" => $result]);
+        return response()->json(["response_status" => "success", "RowDeleted: " => $result]);
     }
 
     /**
@@ -127,7 +127,7 @@ EOF;
 EOF;
 
         $result = DB::delete($sql, ['grup' => $grup]);
-        return response()->json(["ResponseStatus" => "success", "RowDeleted" => $result]);
+        return response()->json(["response_status" => "success", "RowDeleted: " => $result]);
     }
 
     /**
