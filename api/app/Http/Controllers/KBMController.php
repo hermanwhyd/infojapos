@@ -47,7 +47,7 @@ EOF;
 EOF;
 
         $sql2 = <<<EOF
-                SELECT jm.id, jm.nama_panggilan, jm.nama_lengkap, mt.inisial kelompok
+                SELECT jm.id, jm.nama_panggilan, jm.nama_lengkap, jm.jenis_kelamin, mt.inisial kelompok
                 FROM kelas_jadwal kj
                     inner join kelas_jamaah km on kj.kelas_id = km.kelas_id
                     inner join jamaah jm on km.jamaah_id = jm.id
@@ -73,7 +73,7 @@ EOF;
      * Mengambil data siswa (jamaah) berdasarkan id jadwal yang ada di data absensi
      * 
      * @param scdID Integer kelas_jadwal::id
-     * @param timestamp Date kelas_presensi:tanggal_presensi, timestamp format 'dd-mm-yyyy', e.g. '01/09/2017'
+     * @param timestamp Date kelas_presensi:tanggal_presensi, timestamp format 'dd-mm-yyyy', e.g. '01-09-2017'
      */
     public function fetchPresensiByJadwal($scdID, $timestamp) {
         $sql1 = <<<EOF
@@ -87,7 +87,7 @@ EOF;
 EOF;
 
         $sql2 = <<<EOF
-                SELECT kpd.jamaah_id, jm.nama_panggilan, jm.nama_lengkap, mt.inisial kelompok, kpd.keterangan, kpd.alasan
+                SELECT kpd.jamaah_id, jm.nama_panggilan, jm.nama_lengkap, jm.jenis_kelamin, mt.inisial kelompok, kpd.keterangan, kpd.alasan
                 FROM kelas_jadwal kj
                     inner join kelas_presensi kp on kj.id = kp.kelas_jadwal_id and DATE(kp.tanggal_presensi) = DATE(STR_TO_DATE(:timestamp, '%d-%m-%Y'))
                     inner join kelas_presensi_detail kpd on kp.id = kpd.kelas_presensi_id
@@ -132,7 +132,7 @@ EOF;
         INSERT INTO kelas_presensi_detail (kelas_presensi_id, jamaah_id, updated_by)
             SELECT ? kelas_presensi_id, km.jamaah_id, ? updated_by
             FROM kelas_jadwal kj
-                inner join kelas_jamaah km on kj.kelas_id = km.kelas_id
+                inner join kelas_jamaah km on kj.kelas_id = km.kelas_id and km.status_aktif = 'A' and km.tanggal_aktif < STR_TO_DATE(?, '%d-%m-%Y')
                 inner join jamaah jm on km.jamaah_id = jm.id
             WHERE kj.id = ?
             ORDER BY jm.nama_lengkap
@@ -142,10 +142,12 @@ EOF;
         $count = DB::select($sql0, [ $jadwalID,$date->format('d-m-Y') ]);
 
         if ($count[0]->count == 0) {
+            $user = Auth::user();
+            $user = $request->user();
             
-            $result = DB::insert($sql1, [ $jadwalID,$date->format('d-m-Y'),'Parsial','androidApps' ]);
+            $result = DB::insert($sql1, [ $jadwalID,$date->format('d-m-Y'),'Parsial',$user->username ]);
             $idPresensi = DB::connection()->getPdo()->lastInsertId();
-            $result2 = DB::insert($sql2, [$idPresensi, 'androidApps', $jadwalID]);
+            $result2 = DB::insert($sql2, [$idPresensi, 'system', $date->format('d-m-Y'), $jadwalID]);
 
             return response()->json(["response_status" => "success", "message" => "Result: " . $result2]);
         } else {
@@ -159,7 +161,6 @@ EOF;
     */
     public function updatePresensi(Request $request, $presensiID) {
         $user = Auth::user();
-
         $user = $request->user();
 
         $sql = <<<EOF

@@ -42,7 +42,7 @@ class Authenticate
                 $check_token = User::where('api_token', $token)->first();
                 if ($check_token == null) {
                     $res['response_status'] = "BusinessError";
-                    $res['message'] = 'Permission not allowed!';
+                    $res['message'] = 'Session kamu habis, silakan login ulang!';
 
                     return response($res, 403);
                 }

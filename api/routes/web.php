@@ -29,7 +29,7 @@ $router->group(['prefix' => 'v1'], function () use ($router) {
             'version_code'=>1,
             'prev_version_action'=>'reminder', // reminder, update
             'min_version_allowed'=>1,
-            'download_url'=>"download.jokam.online",
+            'download_url'=>"http://download.japos.online",
             'changes_log'=>array(
                 array('version'=>'1.0', 'remark'=>'Pengembangan awal Aplikasi Infojapos')
             )
@@ -48,10 +48,9 @@ $router->group(['prefix' => 'v1'], function () use ($router) {
     $router->delete('jamaah/{id}', 'JamaahController@delete');
 
     // Master enumerations
-    $router->get('pilihan/list', 'EnumsController@fetchByListGrup');
-    $router->get('pilihan/list/all', 'EnumsController@fetchAll');
-    $router->get('pilihan/{grup}', 'EnumsController@fetchByGrup');
     $router->get('pilihan/{id:[0-9]+}', 'EnumsController@fetchById');
+    $router->get('pilihan/{grup}', 'EnumsController@fetchByGrup');
+    $router->get('pilihan', 'EnumsController@fetchAll');
     $router->post('pilihan', 'EnumsController@save');
     $router->put('pilihan/{id}', 'EnumsController@update');
     $router->delete('pilihan/{grup:[A-Za-z]+}', 'EnumsController@deleteByGrup');
@@ -64,4 +63,12 @@ $router->group(['prefix' => 'v1'], function () use ($router) {
     $router->post('class-presences/{scdID:[0-9]+}', ['middleware' => 'auth', 'uses' => 'KBMController@createNewPresensi']);
     $router->put('class-presences/{pscID:[0-9]+}', ['middleware' => 'auth', 'uses' => 'KBMController@updatePresensi']);
 
+    // Kelas
+    $router->get('class/{timestamp}', 'KelasController@getKelasAktif');
+
+    // Statistik
+    $router->get('statistik/kelas/{id:[0-9]+}/{timestamp1}/{timestamp2}', 'StatistikController@statistikKelasPerPeriode');
+    $router->get('statistik/kelas/{id:[0-9]+}/{timestamp1}/{timestamp2}/peserta', 'StatistikController@statistikPesertaPerPeriode');
+    $router->get('statistik/kelas/{id:[0-9]+}/{timestamp1}/{timestamp2}/peserta/new', 'StatistikController@statistikPesertaPerPeriode2');
+    
 });

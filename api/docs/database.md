@@ -9,12 +9,16 @@
   23000 | pilihan
   23100 | sambung_hist
   24300 | majelis_taklim
+  25100 | m_minggu
+  
 
   81000 | kartu_keluarga
   82100 | jamaah_pembinaan
   83000 | jamaah
 
   11000 | User
+
+
 
 
 

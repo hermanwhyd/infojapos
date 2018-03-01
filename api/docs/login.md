@@ -67,6 +67,6 @@ Untuk login user dengan beberapa parameter inputan dan mendapat response 'api_to
 
 + Response 401 (application/json)
     {
-        "ResponseStatus": false,
-        "Message": "Your email or password incorrect!"
+        "response_status": "BussinessError",
+        "message": "Your email or password incorrect!"
     }

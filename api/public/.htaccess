@@ -6,9 +6,9 @@
     RewriteEngine On
     
     # If not from 
-    RewriteCond %{HTTP_HOST} !^api\.japos\.online$ [NC] 
+    RewriteCond %{HTTP_HOST} !^api\.japos\.info$ [NC] 
     # Go to 
-    RewriteRule .* http://www.japos.online/ [L]
+    RewriteRule .* http://www.japos.info/ [L]
     #RewriteRule ^ - [F]
 
     # Redirect Trailing Slashes If Not A Folder...

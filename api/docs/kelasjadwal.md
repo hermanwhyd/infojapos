@@ -45,7 +45,10 @@ Untuk mendapatkan List data siswa dalam satu kelas. Parameter - 'scdID' merupaka
           "id": 83001,
           "nama_panggilan": "Anggi",
           "nama_lengkap": "Pratiwi Anggreini",
-          "kelompok": "VJ"
+          "jenis_kelamin": "Perempuan",
+          "kelompok": "VJ",
+          "keterangan": "I"
+          "alasan": "Sakit"
         }
       ]
     }

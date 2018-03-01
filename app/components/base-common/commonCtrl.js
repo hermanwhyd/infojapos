@@ -5,7 +5,7 @@ app.controller('CommonListCtrl', ['$scope', '$http', '$filter', '$stateParams', 
 	var self = this;
 	
 	// paging
-	self.pageSizeList = [2, 10, 25, 50, 100];
+	self.pageSizeList = [5, 10, 25, 50, 100];
 	self.page = 1;
 	self.pageSize = self.pageSizeList[0];
 	self.total = 0;

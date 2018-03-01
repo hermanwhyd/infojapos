@@ -16,7 +16,7 @@ class EnumsController extends Controller {
                 SELECT 
                     id, grup, posisi, field_01, field_02, field_03
                 FROM 
-                    M_PILIHAN
+                    m_pilihan
                 WHERE
                     grup = :grup
                 ORDER BY GRUP, POSISI ASC
@@ -38,31 +38,6 @@ EOF;
     }
 
     /**
-     * Mengambil seluruh data dari database
-     * 
-     * @param ?grup[]={GRUP_NAME}
-     */
-    public function fetchByListGrup(Request $request) {
-        $result = [];
-
-        $sql = <<<EOF
-                SELECT 
-                    id, FIELD_01 value
-                FROM 
-                    M_PILIHAN
-                WHERE 
-                    GRUP = :grup
-                ORDER BY GRUP, POSISI ASC
-EOF;
-
-        $grupList = $request->input('grup.*');
-        foreach($grupList as $grup) {
-            $result[$grup] = DB::select($sql, ['grup' => $grup]);
-        }
-        return response()->json($result);
-    }
-
-    /**
      * Mengambil satu data dari database
      */
     public function fetchByGrup($grup) {
@@ -70,7 +45,7 @@ EOF;
                 SELECT 
                     id, grup, FIELD_01 value
                 FROM 
-                    M_PILIHAN
+                    m_pilihan
                 WHERE 
                     GRUP = :grup
                 ORDER BY POSISI ASC
@@ -88,7 +63,7 @@ EOF;
                 SELECT 
                     id, grup, field_01, field_02, field_03
                 FROM 
-                    M_PILIHAN
+                    m_pilihan
                 WHERE 
                     id = :id
 EOF;
