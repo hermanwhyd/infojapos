@@ -60,15 +60,20 @@ $router->group(['prefix' => 'v1'], function () use ($router) {
     $router->get('class-schedules/{timestamp}', 'KBMController@fetchJadwalKBMAll');
     $router->get('class-schedules/{scdID:[0-9]+}/students', 'KBMController@fetchSiswaByJadwal');
     $router->get('class-schedules/{scdID:[0-9]+}/presences/{timestamp}', 'KBMController@fetchPresensiByJadwal');
+    $router->get('class-presences/{cpID:[0-9]+}/statistic', 'KBMController@getPresensiStatistik');
+    $router->get('class-presences/{cpID:[0-9]+}/{jmID:[0-9]+}/info', 'KBMController@getPresensiWhoUpdate');
     $router->post('class-presences/{scdID:[0-9]+}', ['middleware' => 'auth', 'uses' => 'KBMController@createNewPresensi']);
     $router->put('class-presences/{pscID:[0-9]+}', ['middleware' => 'auth', 'uses' => 'KBMController@updatePresensi']);
+    $router->delete('class-presences/{pscID:[0-9]+}', ['middleware' => 'auth', 'uses' => 'KBMController@deletePresensi']);
+    
 
     // Kelas
-    $router->get('class/{timestamp}', 'KelasController@getKelasAktif');
+    $router->get('class/{timestamp1}/{timestamp2}', 'KelasController@getKelasAktif');
 
     // Statistik
     $router->get('statistik/kelas/{id:[0-9]+}/{timestamp1}/{timestamp2}', 'StatistikController@statistikKelasPerPeriode');
     $router->get('statistik/kelas/{id:[0-9]+}/{timestamp1}/{timestamp2}/peserta', 'StatistikController@statistikPesertaPerPeriode');
     $router->get('statistik/kelas/{id:[0-9]+}/{timestamp1}/{timestamp2}/peserta/new', 'StatistikController@statistikPesertaPerPeriode2');
+    $router->get('statistik/kelas/{id:[0-9]+}/{timestamp1}/{timestamp2}/download', 'StatistikController@downloadPresensi');
     
 });

@@ -25,6 +25,14 @@ $app = new Laravel\Lumen\Application(
 
 $app->withFacades();
 
+/*
+|--------------------------------------------------------------------------
+| Register Alias
+|--------------------------------------------------------------------------
+|
+*/
+class_alias(Maatwebsite\Excel\Facades\Excel::class, 'Excel');
+
 $app->withEloquent();
 
 /*
@@ -92,6 +100,8 @@ $app->register(App\Providers\AuthServiceProvider::class);
 // $app->register(App\Providers\EventServiceProvider::class);
 
 $app->register('Nord\Lumen\Cors\CorsServiceProvider');
+
+$app->register(Maatwebsite\Excel\ExcelServiceProvider::class);
 
 /*
 |--------------------------------------------------------------------------
