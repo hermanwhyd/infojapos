@@ -4,8 +4,41 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "aecefef96f3d2432171fa340bd296ab1",
+    "content-hash": "eedaab0b43842b314f9749b6775762ba",
     "packages": [
+        {
+            "name": "baao/clear-view-cache",
+            "version": "1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/baao/ClearViewCache.git",
+                "reference": "bd6b87c2fc5cf8667fbdeb2c5ea62f5b6f50b26c"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/baao/ClearViewCache/zipball/bd6b87c2fc5cf8667fbdeb2c5ea62f5b6f50b26c",
+                "reference": "bd6b87c2fc5cf8667fbdeb2c5ea62f5b6f50b26c",
+                "shasum": ""
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Baao\\ClearViewCache\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "michael",
+                    "email": "info@meine-buybox.de"
+                }
+            ],
+            "description": "Simple View Cache Cleaner for laravel lumen",
+            "time": "2015-08-30T23:47:46+00:00"
+        },
         {
             "name": "doctrine/inflector",
             "version": "v1.3.0",

@@ -263,7 +263,7 @@ EOF;
 
     /**
      * Download statistik siswa per periode (timestamp1 sampai timestamp2)
-     * @param String kelasId
+     * @param int id kelasId
      * @param String timestamp1 format 'dd-mm-yyyy', e.g. '01-09-2017'
      * @param String timestamp2 format 'dd-mm-yyyy', e.g. '01-09-2017'
      */
@@ -281,8 +281,8 @@ EOF;
         left outer join sambung_his sh on jm.id = sh.jamaah_id and sh.status_aktif = 'A'
         left outer join majelis_taklim mt on sh.mt_id = mt.id
         where
-        (kp.tanggal_presensi >= STR_TO_DATE('1-2-2018', '%d-%m-%Y') and kp.tanggal_presensi < ADDDATE(STR_TO_DATE('1-3-2018', '%d-%m-%Y'), 1))
-        and jw.kelas_id = 31101
+        (kp.tanggal_presensi >= STR_TO_DATE(:date1, '%d-%m-%Y') and kp.tanggal_presensi < ADDDATE(STR_TO_DATE(:date2, '%d-%m-%Y'), 1))
+        and jw.kelas_id = :id
         order by kp.tanggal_presensi, kl.nama_kelas, jm.nama_lengkap, pd.keterangan
 EOF;
         
@@ -298,7 +298,7 @@ EOF;
             return (array)$value;
         }, $result);
 
-        Excel::create('Presensi_' . $date1->format('d-m-Y') . '-' . $date2->format('d-m-Y'), function($excel) use($resultArr) {
+        Excel::create('Presensi_' . $id . '_' . $date1->format('d-m-Y') . '-' . $date2->format('d-m-Y'), function($excel) use($resultArr) {
             // Set the spreadsheet title, creator, and description
             $excel->setTitle('Presensi');
             $excel->setCreator('HermanW')->setCompany('Majlis Taklim Manba\'ul Ulum');

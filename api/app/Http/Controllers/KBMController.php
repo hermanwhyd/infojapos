@@ -12,23 +12,49 @@ class KBMController extends Controller {
     /**
      * Mengambil list jadwal KBM berdasarkan timestamp format 'dd-mm-yyyy', e.g. '01-09-2017'
      */
-    public function fetchJadwalKBMAll($timestamp) {
-        $sql = <<<EOF
-                SELECT kj.id, kl.nama_kelas, kj.lokasi, en.field_02 lv_pembina, kj.jam_mulai, kj.jam_selesai, kp.id presensi_id, kp.status_presensi, count(kpd.jamaah_id) ttl_peserta
-                FROM kelas_jadwal kj
-                    inner join kelas kl on kj.kelas_id = kl.id
-                    inner join majelis_taklim mt on kj.mt_id = mt.id
-                        inner join m_pilihan en on mt.lv_pembina = en.id
-                    left outer join kelas_presensi kp on kj.id = kp.kelas_jadwal_id and DATE(kp.tanggal_presensi) = STR_TO_DATE(:timestamp, '%d-%m-%Y')
-                    left outer join kelas_presensi_detail kpd on kp.id = kpd.kelas_presensi_id
-                WHERE
-                    kj.hari = :day
-                GROUP BY kj.id, kl.nama_kelas, kj.lokasi, en.field_02, kj.jam_mulai, kj.jam_selesai, kp.status_presensi
-                ORDER BY kj.jam_mulai, kj.jam_selesai, kl.nama_kelas
+     public function fetchJadwalKBMAll($timestamp) {
+         $sql = <<<EOF
+                 SELECT kj.id, kl.nama_kelas, kj.lokasi, en.field_02 lv_pembina, kj.jam_mulai, kj.jam_selesai, kp.id presensi_id, kp.status_presensi, count(kpd.jamaah_id) ttl_peserta
+                 FROM kelas_jadwal kj
+                     inner join kelas kl on kj.kelas_id = kl.id
+                     inner join majelis_taklim mt on kj.mt_id = mt.id
+                         inner join m_pilihan en on mt.lv_pembina = en.id
+                     left outer join kelas_presensi kp on kj.id = kp.kelas_jadwal_id and DATE(kp.tanggal_presensi) = STR_TO_DATE(:timestamp, '%d-%m-%Y')
+                     left outer join kelas_presensi_detail kpd on kp.id = kpd.kelas_presensi_id
+                 WHERE
+                     kj.hari = :day
+                 GROUP BY kj.id, kl.nama_kelas, kj.lokasi, en.field_02, kj.jam_mulai, kj.jam_selesai, kp.status_presensi
+                 ORDER BY kj.jam_mulai, kj.jam_selesai, kl.nama_kelas
 EOF;
-        
+
+         $date = DateTime::createFromFormat('d-m-Y', $timestamp);
+         $bindparams = ['timestamp' => $date->format('d-m-Y'), 'day' => $date->format('D')];
+         Log::info('params: ' . json_encode($bindparams));
+
+         $result = DB::select($sql, $bindparams);
+         return response()->json($result);
+     }
+
+    public function fetchJadwalKBMAllV2($timestamp) {
+        $sql = <<<EOF
+        SELECT kj.id, kl.nama_kelas, kj.lokasi, en.field_02 lv_pembina, kj.jam_mulai, kj.jam_selesai, kp.id presensi_id, kp.status_presensi, count(kpd.jamaah_id) ttl_peserta
+               , CAST(sum(case when kpd.keterangan = 'A' then 1 else 0 end) as INT) AS A, CAST(sum(case when kpd.keterangan = 'I' then 1 else 0 end) as INT) AS I, CAST(sum(case when kpd.keterangan = 'H' then 1 else 0 end) as INT) AS H
+        FROM kelas_jadwal kj
+            inner join kelas kl on kj.kelas_id = kl.id
+            inner join majelis_taklim mt on kj.mt_id = mt.id
+                inner join m_pilihan en on mt.lv_pembina = en.id
+            left outer join kelas_presensi kp on kj.id = kp.kelas_jadwal_id and DATE(kp.tanggal_presensi) = STR_TO_DATE(:timestamp1, '%d-%m-%Y')
+            left outer join kelas_presensi_detail kpd on kp.id = kpd.kelas_presensi_id
+        WHERE
+            kj.hari = :day AND
+            kj.status_aktif = 'A' AND
+            (date(kj.tanggal_aktif)<=STR_TO_DATE(:timestamp2, '%d-%m-%Y')) AND (date(kj.tanggal_inaktif)>=STR_TO_DATE(:timestamp3, '%d-%m-%Y'))
+        GROUP BY kj.id, kl.nama_kelas, kj.lokasi, en.field_02, kj.jam_mulai, kj.jam_selesai, kp.status_presensi
+        ORDER BY kj.jam_mulai, kj.jam_selesai, kl.nama_kelas
+EOF;
+
         $date = DateTime::createFromFormat('d-m-Y', $timestamp);
-        $bindparams = ['timestamp' => $date->format('d-m-Y'), 'day' => $date->format('D')];
+        $bindparams = ['timestamp1' => $date->format('d-m-Y'), 'day' => $date->format('D'), 'timestamp2' => $date->format('d-m-Y'), 'timestamp3' => $date->format('d-m-Y')];
         Log::info('params: ' . json_encode($bindparams));
 
         $result = DB::select($sql, $bindparams);
@@ -73,7 +99,7 @@ EOF;
 
     /**
      * Mengambil data siswa (jamaah) berdasarkan id jadwal yang ada di data absensi
-     * 
+     *
      * @param scdID Integer kelas_jadwal::id
      * @param timestamp Date kelas_presensi:tanggal_presensi, timestamp format 'dd-mm-yyyy', e.g. '01-09-2017'
      */
@@ -102,7 +128,7 @@ EOF;
 
         $date = DateTime::createFromFormat('d-m-Y', $timestamp);
         Log::info('Datetime: ' . json_encode(['j_id' => $scdID, 'timestamp' => $date->format('d-m-Y')]));
-        
+
         $result = DB::select($sql1, ['j_id' => $scdID, 'timestamp' => $date->format('d-m-Y')]);
         $result2 = DB::select($sql2, ['j_id' => $scdID, 'timestamp' => $date->format('d-m-Y')]);
 
@@ -121,7 +147,7 @@ EOF;
     */
     public function createNewPresensi(Request $request, $jadwalID) {
         $sql0 = <<<EOF
-        SELECT count(*) count FROM kelas_presensi 
+        SELECT count(*) count FROM kelas_presensi
             WHERE kelas_jadwal_id = ? and DATE(tanggal_presensi) = STR_TO_DATE(?, '%d-%m-%Y')
 EOF;
 
@@ -146,7 +172,7 @@ EOF;
         if ($count[0]->count == 0) {
             $user = Auth::user();
             $user = $request->user();
-            
+
             $result = DB::insert($sql1, [ $jadwalID,$date->format('d-m-Y'),'Parsial',$user->username ]);
             $idPresensi = DB::connection()->getPdo()->lastInsertId();
             $result2 = DB::insert($sql2, [$idPresensi, 'system', $date->format('d-m-Y'), $jadwalID]);
@@ -176,15 +202,15 @@ EOF;
         foreach($presences as $presence) {
             DB::update($sql, [ $presence['keterangan'],$presence['alasan'],$user->username,$presensiID,$presence['jamaah_id'] ]);
         }
-        
+
         return response()->json(["response_status" => "success", "message" => "Data berhasil diupdate."]);
     }
 
     /**
      * Untuk mendapatkan informasi siapa yang mengupdate presensi siswa
-     * 
+     *
      * Dipanggil di menu presensi, tombol info
-     * 
+     *
      * @param $presensiId kelas_presensi_id
      * @param $jamaahId jamaah_id
      */
@@ -195,7 +221,7 @@ EOF;
             left outer join users u on p.updated_by = u.username
         where kelas_presensi_id = :kp_id and jamaah_id = :jm_id
 EOF;
-        
+
         $result = DB::select($sql, ['kp_id' => $presensiId, 'jm_id' => $jamaahId]);
 
         return response()->json($result[0]);
