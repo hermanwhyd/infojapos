@@ -40,7 +40,7 @@ class RoleMiddleware
             $res['response_status'] = "BusinessError";
             $res['message'] = 'Anda tidak memilik hak akses! info lanjut, hubungi Admin';
 
-            return response($res, 409);
+            return response($res, 403);
         }
 
         return $next($request);
