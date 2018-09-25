@@ -11,7 +11,8 @@
         "nordsoftware/lumen-cors": "^2.2",
         "hashids/hashids": "^2.0",
         "maatwebsite/excel": "~2.1.0",
-        "baao/clear-view-cache": "^1.0"
+        "baao/clear-view-cache": "^1.0",
+        "phpoffice/phpspreadsheet": "^1.4"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",

@@ -6,7 +6,8 @@ use Log;
 use DB;
 use \Datetime;
 use Illuminate\Http\Request;
-use \Excel;
+use PhpOffice\PhpSpreadsheet\IOFactory;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
 // use Illuminate\Support\Facades\Auth;
 
 class StatistikController extends Controller {
@@ -298,16 +299,61 @@ EOF;
             return (array)$value;
         }, $result);
 
-        Excel::create('Presensi_' . $id . '_' . $date1->format('d-m-Y') . '-' . $date2->format('d-m-Y'), function($excel) use($resultArr) {
-            // Set the spreadsheet title, creator, and description
-            $excel->setTitle('Presensi');
-            $excel->setCreator('HermanW')->setCompany('Majlis Taklim Manba\'ul Ulum');
-            $excel->setDescription('Presensi KBM per kelas');
+        // Create new Spreadsheet object
+        $spreadsheet = new Spreadsheet();
 
-            // Build the spreadsheet, passing in the payments array
-            $excel->sheet('sheet1', function($sheet) use ($resultArr) {
-                $sheet->fromArray($resultArr);
-            });
-        })->download('xlsx');
+        // Set document properties
+        $spreadsheet->getProperties()->setCreator('HermanW')
+            ->setCompany('Majlis Taklim Manba\'ul Ulum')
+            ->setTitle('Presensi KBM')
+            ->setDescription('Presensi KBM per kelas')
+            ->setCategory('Laporan Bulanan');
+
+        $fileName = 'Presensi_' . $id . '_' . $date1->format('d-m-Y') . '-' . $date2->format('d-m-Y');
+
+        // Add Header Data
+        $headerArray = ['KELAS','NAMA LENGKAP','KELOMPOK','TANGGAL KBM','MINGGU KE','KEHADIRAN','KETERANGAN'];
+        $spreadsheet->setActiveSheetIndex(0)
+            ->fromArray($headerArray, NULL, 'A1');
+
+        // Add Body Data
+        $spreadsheet->setActiveSheetIndex(0)
+            ->fromArray( $resultArr, NULL, 'A2' );;
+
+        // Rename worksheet
+        $spreadsheet->getActiveSheet()->setTitle('Simple');
+
+        // Set active sheet index to the first sheet, so Excel opens this as the first sheet
+        $spreadsheet->setActiveSheetIndex(0);
+
+        // Redirect output to a client’s web browser (Xlsx)
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        // header('Content-Disposition: attachment;filename="' + $fileName + '.xlsx"');
+        header('Content-Disposition: attachment;filename="' . $fileName . '.xlsx"');
+        header('Cache-Control: max-age=0');
+        // If you're serving to IE 9, then the following may be needed
+        header('Cache-Control: max-age=1');
+
+        // If you're serving to IE over SSL, then the following may be needed
+        header('Expires: Mon, 26 Jul 1997 05:00:00 GMT'); // Date in the past
+        header('Last-Modified: ' . gmdate('D, d M Y H:i:s') . ' GMT'); // always modified
+        header('Cache-Control: cache, must-revalidate'); // HTTP/1.1
+        header('Pragma: public'); // HTTP/1.0
+
+        $writer = IOFactory::createWriter($spreadsheet, 'Xlsx');
+        $writer->save('php://output');
+        exit;
+
+        // Excel::create('Presensi_' . $id . '_' . $date1->format('d-m-Y') . '-' . $date2->format('d-m-Y'), function($excel) use($resultArr) {
+        //     // Set the spreadsheet title, creator, and description
+        //     $excel->setTitle('Presensi');
+        //     $excel->setCreator('HermanW')->setCompany('Majlis Taklim Manba\'ul Ulum');
+        //     $excel->setDescription('Presensi KBM per kelas');
+
+        //     // Build the spreadsheet, passing in the payments array
+        //     $excel->sheet('sheet1', function($sheet) use ($resultArr) {
+        //         $sheet->fromArray($resultArr);
+        //     });
+        // })->download('xlsx');
     }
 }
