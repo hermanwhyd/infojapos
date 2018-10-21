@@ -160,7 +160,7 @@ EOF;
         INSERT INTO kelas_presensi_detail (kelas_presensi_id, jamaah_id, updated_by)
             SELECT ? kelas_presensi_id, km.jamaah_id, ? updated_by
             FROM kelas_jadwal kj
-                inner join kelas_jamaah km on kj.kelas_id = km.kelas_id and km.status_aktif = 'A' and km.tanggal_aktif < STR_TO_DATE(?, '%d-%m-%Y')
+                inner join kelas_jamaah km on kj.kelas_id = km.kelas_id and km.status_aktif = 'A' and km.tanggal_aktif < STR_TO_DATE(?, '%d-%m-%Y') AND km.tanggal_inaktif >= STR_TO_DATE(?, '%d-%m-%Y')
                 inner join jamaah jm on km.jamaah_id = jm.id
             WHERE kj.id = ?
             ORDER BY jm.nama_lengkap
@@ -175,7 +175,7 @@ EOF;
 
             $result = DB::insert($sql1, [ $jadwalID,$date->format('d-m-Y'),'Parsial',$user->username ]);
             $idPresensi = DB::connection()->getPdo()->lastInsertId();
-            $result2 = DB::insert($sql2, [$idPresensi, 'system', $date->format('d-m-Y'), $jadwalID]);
+            $result2 = DB::insert($sql2, [$idPresensi, 'system', $date->format('d-m-Y'), $date->format('d-m-Y'), $jadwalID]);
 
             return response()->json(["response_status" => "success", "message" => "Result: " . $result2]);
         } else {
