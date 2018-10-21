@@ -160,7 +160,7 @@ EOF;
         INSERT INTO kelas_presensi_detail (kelas_presensi_id, jamaah_id, updated_by)
             SELECT ? kelas_presensi_id, km.jamaah_id, ? updated_by
             FROM kelas_jadwal kj
-                inner join kelas_jamaah km on kj.kelas_id = km.kelas_id and km.status_aktif = 'A' and km.tanggal_aktif < STR_TO_DATE(?, '%d-%m-%Y') AND km.tanggal_inaktif >= STR_TO_DATE(?, '%d-%m-%Y')
+                inner join kelas_jamaah km on kj.kelas_id = km.kelas_id and km.status_aktif = 'A' and km.tanggal_aktif < STR_TO_DATE(?, '%d-%m-%Y') AND coalesce(km.tanggal_inaktif, STR_TO_DATE('01-01-2050', '%d-%m-%Y')) >= STR_TO_DATE(?, '%d-%m-%Y')
                 inner join jamaah jm on km.jamaah_id = jm.id
             WHERE kj.id = ?
             ORDER BY jm.nama_lengkap
